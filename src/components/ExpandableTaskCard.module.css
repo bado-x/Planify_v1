@@ -133,11 +133,19 @@
   border-radius: 12px;
   font-weight: 500;
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .actionButton:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.buttonText {
+  display: inline;
 }
 
 /* Card List */
@@ -288,5 +296,20 @@
 
   .cardDescription {
     font-size: 0.85rem;
+  }
+
+  .buttonText {
+    display: none;
+  }
+
+  .actionButton {
+    min-width: auto;
+    padding: 0.75rem;
+    width: 48px;
+    height: 48px;
+  }
+
+  .actionButton i {
+    font-size: 1.2rem;
   }
 }

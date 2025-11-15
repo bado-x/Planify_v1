@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate, useLocation } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import AddTask from "./pages/AddTask/AddTask";
 import Login from "./pages/Auth/Login";
@@ -10,8 +10,6 @@ import { useEffect, useState } from 'react';
 import Sidebar from "./components/Sidebar";
 import TaskTracking from "./pages/TaskTracking";
 import CalendarPage from "./pages/Calendar";
-import Analytics from "./pages/Analytics/Analytics";
-import Projects from "./pages/Projects/Projects";
 import About from "./pages/About/About";
 import Features from "./pages/Features/Features";
 import Contact from "./pages/Contact/Contact";
@@ -19,6 +17,8 @@ import FAQ from "./pages/FAQ/FAQ";
 import { taskApi } from "./services/api";
 
 function App() {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [tasks, setTasks] = useState([]);
@@ -104,8 +104,6 @@ function App() {
           <Route path="/register" element={!user ? <Register onRegister={handleLogin} /> : <Navigate to="/dashboard" />} />
           <Route path="/task-tracking" element={user ? <TaskTracking tasks={tasks} user={user} onLogout={handleLogout} fetchTasks={App.fetchTasks} /> : <Navigate to="/login" />} />
           <Route path="/calendar" element={user ? <CalendarPage tasks={tasks} user={user} onLogout={handleLogout} fetchTasks={App.fetchTasks} /> : <Navigate to="/login" />} />
-          <Route path="/analytics" element={user ? <Analytics tasks={tasks} user={user} fetchTasks={App.fetchTasks} /> : <Navigate to="/login" />} />
-          <Route path="/projects" element={user ? <Projects tasks={tasks} user={user} fetchTasks={App.fetchTasks} /> : <Navigate to="/login" />} />
           <Route path="/about" element={<About />} />
           <Route path="/old-about" element={<About />} />
           <Route path="/features" element={<Features />} />
@@ -116,30 +114,34 @@ function App() {
       </div>
       {user && isMobile && (
         <nav className="mobileMenu">
-          <a href="/dashboard" className="mobileMenuItem">
+          <button
+            onClick={() => navigate('/dashboard')}
+            className={`mobileMenuItem ${location.pathname === '/dashboard' ? 'active' : ''}`}
+          >
             <span className="mobileMenuIcon">🏠</span>
             <span>Home</span>
-          </a>
-          <a href="/add-task" className="mobileMenuItem">
+          </button>
+          <button
+            onClick={() => navigate('/add-task')}
+            className={`mobileMenuItem ${location.pathname === '/add-task' ? 'active' : ''}`}
+          >
             <span className="mobileMenuIcon">➕</span>
             <span>New</span>
-          </a>
-          <a href="/task-tracking" className="mobileMenuItem">
+          </button>
+          <button
+            onClick={() => navigate('/task-tracking')}
+            className={`mobileMenuItem ${location.pathname === '/task-tracking' ? 'active' : ''}`}
+          >
             <span className="mobileMenuIcon">📋</span>
             <span>Tasks</span>
-          </a>
-          <a href="/calendar" className="mobileMenuItem">
+          </button>
+          <button
+            onClick={() => navigate('/calendar')}
+            className={`mobileMenuItem ${location.pathname === '/calendar' ? 'active' : ''}`}
+          >
             <span className="mobileMenuIcon">📅</span>
             <span>Calendar</span>
-          </a>
-          <a href="/analytics" className="mobileMenuItem">
-            <span className="mobileMenuIcon">📊</span>
-            <span>Analytics</span>
-          </a>
-          <a href="/projects" className="mobileMenuItem">
-            <span className="mobileMenuIcon">📁</span>
-            <span>Projects</span>
-          </a>
+          </button>
         </nav>
       )}
     </div>

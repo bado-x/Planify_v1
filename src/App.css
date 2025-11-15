@@ -164,16 +164,23 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     color: #6c757d;
     text-decoration: none;
     font-size: 0.8rem;
-    transition: color 0.2s;
+    transition: all 0.3s ease;
     padding: 4px 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
   }
-  .mobileMenuItem.active,
-  .mobileMenuItem:active,
-  .mobileMenuItem:focus {
-    color: #f5f5dc;
+  .mobileMenuItem.active {
+    color: #2f0c33;
+    font-weight: 600;
+  }
+  .mobileMenuItem:hover {
+    color: #2f0c33;
   }
   .mobileMenuIcon {
     font-size: 1.5rem;
@@ -185,15 +192,16 @@ body {
     padding: 0.25rem !important;
   }
   .mobileMenu {
-    padding: 4px 0;
+    padding: 6px 0;
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
+    height: 60px;
   }
   .mobileMenuItem {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
   }
   .mobileMenuIcon {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
   }
 }
 

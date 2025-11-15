@@ -7,8 +7,8 @@
 
 .landingContainer {
   min-height: 100vh;
-  background: linear-gradient(135deg, #2F0C33 0%, #4A1A4F 50%, #1A0B1E 100%);
-  color: #F5F5DC;
+  background: linear-gradient(135deg, #2f0c33 0%, #4a1a4f 50%, #1a0b1e 100%);
+  color: #f5f5dc;
   width: 100vw;
   margin: 0;
   padding: 0;
@@ -58,7 +58,7 @@
 }
 
 .logoText {
-  color: #F5F5DC;
+  color: #f5f5dc;
   font-weight: 700;
   letter-spacing: -0.5px;
 }
@@ -70,7 +70,7 @@
 }
 
 .navLink {
-  color: #F5F5DC;
+  color: #f5f5dc;
   text-decoration: none;
   font-weight: 500;
   transition: opacity 0.3s ease;
@@ -78,13 +78,13 @@
 
 .navLink:hover {
   opacity: 0.8;
-  color: #F5F5DC;
+  color: #f5f5dc;
 }
 
 .getStartedBtn {
-  background-color: #F5F5DC !important;
-  border: 2px solid #F5F5DC !important;
-  color: #2F0C33 !important;
+  background-color: #f5f5dc !important;
+  border: 2px solid #f5f5dc !important;
+  color: #2f0c33 !important;
   padding: 0.5rem 1.5rem;
   border-radius: 25px;
   font-weight: 600;
@@ -93,8 +93,8 @@
 
 .getStartedBtn:hover {
   background-color: rgba(245, 245, 220, 0.8) !important;
-  border-color: #F5F5DC !important;
-  color: #2F0C33 !important;
+  border-color: #f5f5dc !important;
+  color: #2f0c33 !important;
   transform: translateY(-2px);
 }
 
@@ -125,9 +125,9 @@
 }
 
 .heroBtn {
-  background-color: #F5F5DC !important;
-  border: 2px solid #F5F5DC !important;
-  color: #2F0C33 !important;
+  background-color: #f5f5dc !important;
+  border: 2px solid #f5f5dc !important;
+  color: #2f0c33 !important;
   padding: 1rem 3rem;
   border-radius: 30px;
   font-size: 1.1rem;
@@ -138,8 +138,8 @@
 
 .heroBtn:hover {
   background-color: rgba(245, 245, 220, 0.8) !important;
-  border-color: #F5F5DC !important;
-  color: #2F0C33 !important;
+  border-color: #f5f5dc !important;
+  color: #2f0c33 !important;
   transform: translateY(-3px);
   box-shadow: 0 6px 18px rgba(245, 245, 220, 0.15);
 }
@@ -159,7 +159,7 @@
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 3rem;
-  color: #F5F5DC;
+  color: #f5f5dc;
 }
 
 .featureCard {
@@ -186,7 +186,7 @@
   font-size: 1.3rem;
   font-weight: 600;
   margin-bottom: 1rem;
-  color: #F5F5DC;
+  color: #f5f5dc;
 }
 
 .featureCard p {
@@ -214,19 +214,25 @@
   .navLinks {
     display: none;
   }
-  
+
   .heroTitle {
     font-size: 2.5rem;
   }
-  
+
   .heroSubtitle {
     font-size: 1.1rem;
   }
-  
+
+  .heroBtn {
+    padding: 0.85rem 2rem !important;
+    font-size: 0.95rem !important;
+    max-width: 250px;
+  }
+
   .featuresSection {
     padding: 50px 0;
   }
-  
+
   .sectionTitle {
     font-size: 2rem;
   }
@@ -236,16 +242,28 @@
   .heroTitle {
     font-size: 2rem;
   }
-  
+
+  .heroSubtitle {
+    font-size: 1rem;
+  }
+
+  .heroBtn {
+    padding: 0.75rem 1.5rem !important;
+    font-size: 0.9rem !important;
+    white-space: nowrap;
+    max-width: 200px;
+    display: inline-block;
+  }
+
   .navContent {
     flex-direction: column;
     gap: 1rem;
   }
-  
+
   .navbar {
     position: relative;
   }
-  
+
   .heroSection {
     padding: 50px 0;
   }
@@ -272,25 +290,25 @@
 .landingContainer .col-md-4,
 .landingContainer .col-lg-8 {
   padding: 0 1rem;
-}/*
+} /*
  Force black buttons - override Bootstrap */
 .getStartedBtn:focus,
 .getStartedBtn:active,
 .getStartedBtn.active {
-  background-color: #F5F5DC !important;
-  border-color: #F5F5DC !important;
-  color: #2F0C33 !important;
+  background-color: #f5f5dc !important;
+  border-color: #f5f5dc !important;
+  color: #2f0c33 !important;
   box-shadow: 0 0 0 0.2rem rgba(245, 245, 220, 0.25) !important;
 }
 
 .heroBtn:focus,
 .heroBtn:active,
 .heroBtn.active {
-  background-color: #F5F5DC !important;
-  border-color: #F5F5DC !important;
-  color: #2F0C33 !important;
+  background-color: #f5f5dc !important;
+  border-color: #f5f5dc !important;
+  color: #2f0c33 !important;
   box-shadow: 0 0 0 0.2rem rgba(245, 245, 220, 0.25) !important;
-}/* Logo
+} /* Logo
  hover effects */
 .logo:hover .logoIcon {
   transform: scale(1.1);

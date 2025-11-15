@@ -174,8 +174,8 @@ const ExpandableTaskCard = ({ tasks, onDelete }) => {
                                                 }}
                                                 className={styles.actionButton}
                                             >
-                                                <i className="bi bi-pencil me-2"></i>
-                                                Edit Task
+                                                <i className="bi bi-pencil"></i>
+                                                <span className={styles.buttonText}>Edit Task</span>
                                             </Button>
                                             <Button
                                                 variant="outline-danger"
@@ -187,8 +187,8 @@ const ExpandableTaskCard = ({ tasks, onDelete }) => {
                                                 }}
                                                 className={styles.actionButton}
                                             >
-                                                <i className="bi bi-trash me-2"></i>
-                                                Delete Task
+                                                <i className="bi bi-trash"></i>
+                                                <span className={styles.buttonText}>Delete Task</span>
                                             </Button>
                                         </div>
                                     </motion.div>
