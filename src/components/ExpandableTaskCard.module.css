@@ -1,0 +1,292 @@
+/* Overlay */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  height: 100%;
+  width: 100%;
+  z-index: 10;
+}
+
+/* Modal Container */
+.modalContainer {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 100;
+  padding: 1rem;
+}
+
+/* Close Button */
+.closeButton {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border-radius: 50%;
+  height: 2.5rem;
+  width: 2.5rem;
+  border: none;
+  cursor: pointer;
+  z-index: 101;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+.closeButton:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.closeIcon {
+  height: 1.5rem;
+  width: 1.5rem;
+  color: #2f0c33;
+}
+
+/* Expanded Card */
+.expandedCard {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, #2f0c33 0%, #4a1a4f 100%);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(47, 12, 51, 0.4);
+}
+
+.expandedContent {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.expandedHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 2rem;
+  border-bottom: 1px solid rgba(245, 245, 220, 0.1);
+}
+
+.expandedTitle {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #f5f5dc;
+  margin-bottom: 1rem;
+}
+
+.expandedStatus {
+  margin-top: 0.5rem;
+}
+
+.expandedBody {
+  padding: 2rem;
+  position: relative;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.expandedDescription {
+  color: #f5f5dc;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.expandedDescription h4 {
+  color: #e6e6fa;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.expandedDescription h4:first-child {
+  margin-top: 0;
+}
+
+.expandedDescription p {
+  color: rgba(245, 245, 220, 0.9);
+  margin-bottom: 0;
+  white-space: pre-line;
+}
+
+.expandedActions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.actionButton {
+  flex: 1;
+  min-width: 150px;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.actionButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Card List */
+.cardList {
+  max-width: 100%;
+  margin: 0 auto;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+  list-style: none;
+  padding: 0;
+}
+
+/* Card */
+.card {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: linear-gradient(135deg, #2f0c33 0%, #4a1a4f 100%);
+  border-radius: 16px;
+  cursor: pointer;
+  border: 1px solid rgba(245, 245, 220, 0.1);
+  box-shadow: 0 4px 15px rgba(47, 12, 51, 0.15);
+  transition: all 0.3s ease;
+  min-height: 180px;
+}
+
+.card:hover {
+  box-shadow: 0 8px 25px rgba(47, 12, 51, 0.25);
+}
+
+.cardContent {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+}
+
+.cardTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #f5f5dc;
+  margin-bottom: 0.5rem;
+}
+
+.cardDescription {
+  color: rgba(245, 245, 220, 0.8);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.cardStatus {
+  display: flex;
+  align-items: center;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .cardList {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .cardList {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .expandedCard {
+    max-width: 95%;
+    max-height: 85vh;
+    border-radius: 20px;
+  }
+
+  .expandedHeader {
+    padding: 1.5rem;
+  }
+
+  .expandedTitle {
+    font-size: 1.5rem;
+  }
+
+  .expandedBody {
+    padding: 1.5rem;
+  }
+
+  .expandedActions {
+    flex-direction: column;
+  }
+
+  .actionButton {
+    width: 100%;
+  }
+
+  .card {
+    min-height: 160px;
+  }
+}
+
+@media (max-width: 480px) {
+  .closeButton {
+    top: 0.5rem;
+    right: 0.5rem;
+    height: 2rem;
+    width: 2rem;
+  }
+
+  .closeIcon {
+    height: 1.25rem;
+    width: 1.25rem;
+  }
+
+  .expandedCard {
+    border-radius: 16px;
+  }
+
+  .expandedHeader {
+    padding: 1rem;
+  }
+
+  .expandedTitle {
+    font-size: 1.25rem;
+  }
+
+  .expandedBody {
+    padding: 1rem;
+  }
+
+  .expandedDescription {
+    font-size: 0.9rem;
+  }
+
+  .card {
+    padding: 1rem;
+  }
+
+  .cardTitle {
+    font-size: 1rem;
+  }
+
+  .cardDescription {
+    font-size: 0.85rem;
+  }
+}

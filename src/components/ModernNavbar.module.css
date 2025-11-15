@@ -1,0 +1,216 @@
+/* Scrolling Header with Logo and CTA */
+.fixedHeader {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  right: 2rem;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+}
+
+.fixedHeader > * {
+  pointer-events: auto;
+}
+
+/* Smart Navbar Menu */
+.scrollingNavbar {
+  position: fixed;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1001;
+  transition: all 0.3s ease-in-out;
+}
+
+.scrollingNavbar.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.scrollingNavbar.hidden {
+  opacity: 0;
+  transform: translateX(-50%) translateY(-100%);
+  pointer-events: none;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.logoIcon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.logoIcon:hover {
+  transform: scale(1.05);
+}
+
+.logoText {
+  color: #F5F5DC;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.ctaButton {
+  position: relative;
+  background: linear-gradient(135deg, rgba(47, 12, 51, 0.9), rgba(74, 26, 79, 0.7)) !important;
+  border: none !important;
+  border-radius: 1rem !important;
+  backdrop-filter: blur(16px);
+  box-shadow: 
+    0 8px 32px rgba(47, 12, 51, 0.3),
+    inset 0 1px 0 rgba(245, 245, 220, 0.1) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #F5F5DC !important;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.8rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  min-width: 120px;
+  height: 40px;
+  overflow: hidden;
+}
+
+.ctaButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.ctaButton:hover::before {
+  left: 100%;
+}
+
+.ctaButton:hover {
+  background: linear-gradient(135deg, rgba(47, 12, 51, 1), rgba(74, 26, 79, 0.8)) !important;
+  box-shadow: 
+    0 12px 48px rgba(47, 12, 51, 0.4),
+    inset 0 1px 0 rgba(245, 245, 220, 0.2) !important;
+  transform: translateY(-2px);
+  color: #F5F5DC !important;
+}
+
+.ctaButton:focus {
+  background: linear-gradient(135deg, rgba(47, 12, 51, 1), rgba(74, 26, 79, 0.8)) !important;
+  box-shadow: 
+    0 0 0 0.15rem rgba(245, 245, 220, 0.2),
+    0 8px 32px rgba(47, 12, 51, 0.3),
+    inset 0 1px 0 rgba(245, 245, 220, 0.1) !important;
+  color: #F5F5DC !important;
+}
+
+.ctaButton:active {
+  transform: translateY(1px);
+  box-shadow: 0 4px 16px rgba(47, 12, 51, 0.3);
+}
+
+.navbarLinksColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.navbarProductsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  padding: 1rem;
+  min-width: 500px;
+}
+
+/* Logo hover effects */
+.logo:hover .logoIcon {
+  transform: scale(1.1);
+  transition: transform 0.3s ease;
+}
+
+.logo:hover .logoText {
+  color: rgba(245, 245, 220, 0.7);
+  transition: color 0.3s ease;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .fixedHeader {
+    left: 1rem;
+    right: 1rem;
+  }
+  
+  .navbarProductsGrid {
+    min-width: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .fixedHeader {
+    position: relative;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    background: rgba(47, 12, 51, 0.9);
+    backdrop-filter: blur(16px);
+    border-radius: 0;
+  }
+  
+  .scrollingNavbar {
+    display: none;
+  }
+  
+  .scrollingNavbar.visible,
+  .scrollingNavbar.hidden {
+    display: none;
+  }
+  
+  .logo {
+    font-size: 1.3rem;
+  }
+  
+  .logoIcon {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .ctaButton {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    min-width: 80px;
+    height: 36px;
+  }
+}
+
+@media (max-width: 576px) {
+  .fixedHeader {
+    padding: 0.8rem 1rem;
+  }
+  
+  .logo {
+    font-size: 1.2rem;
+  }
+  
+  .logoIcon {
+    width: 24px;
+    height: 24px;
+  }
+}

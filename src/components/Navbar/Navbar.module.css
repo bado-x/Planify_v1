@@ -1,0 +1,432 @@
+.navbarCustom {
+  width: 100%;
+  max-width: 100%;
+  height: 70px;
+  background: linear-gradient(135deg, #2f0c33 0%, #4a1a4f 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 15px rgba(47, 12, 51, 0.2);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 101;
+  padding: 0 32px;
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+.leftSection {
+  display: flex;
+  align-items: center;
+}
+.logoIcon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #f5f5dc, #e6e6fa);
+  border-radius: 8px;
+  margin-right: 12px;
+}
+.logoText {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #f5f5dc;
+}
+
+.searchFormCustom {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  max-width: 400px;
+  margin: 0 40px;
+  background: rgba(245, 245, 220, 0.1);
+  border-radius: 24px;
+  padding: 0 12px;
+  height: 44px;
+  border: 1px solid rgba(245, 245, 220, 0.2);
+}
+.searchInputCustom {
+  border: none;
+  background: transparent;
+  outline: none;
+  flex: 1;
+  font-size: 1rem;
+  padding: 8px 0;
+  color: #f5f5dc;
+}
+
+.searchInputCustom::placeholder {
+  color: rgba(245, 245, 220, 0.5);
+}
+.clearButtonCustom {
+  background: none;
+  border: none;
+  color: rgba(245, 245, 220, 0.7);
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  margin-right: 0.25rem;
+  transition: all 0.3s ease;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+}
+
+.clearButtonCustom:hover {
+  color: #f5f5dc;
+  background: rgba(245, 245, 220, 0.1);
+  transform: scale(1.1);
+}
+
+.searchButtonCustom {
+  background: none;
+  border: none;
+  color: #f5f5dc;
+  font-size: 1.3rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  transition: all 0.3s ease;
+}
+
+.searchButtonCustom:hover {
+  color: #e6e6fa;
+  transform: scale(1.1);
+}
+
+.rightSectionCustom {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.dateTextCustom {
+  color: rgba(245, 245, 220, 0.7);
+  font-size: 1rem;
+  font-weight: 500;
+  margin-right: 12px;
+}
+.newTaskButton {
+  background: linear-gradient(135deg, #f5f5dc, #e6e6fa);
+  color: #2f0c33;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.newTaskButton:hover {
+  background: #24c98a;
+}
+.plusIcon {
+  font-size: 1.3rem;
+}
+.profileDropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.profileDropdown:hover {
+  background: rgba(245, 245, 220, 0.1);
+}
+.profileName {
+  font-weight: 600;
+  color: #f5f5dc;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  user-select: none;
+}
+
+.profileIcon {
+  color: #f5f5dc;
+  transition: transform 0.3s ease;
+}
+
+.profileDropdown:hover .profileIcon {
+  transform: scale(1.1);
+}
+.profileMenu {
+  display: none;
+  position: fixed;
+  top: 70px;
+  right: 32px;
+  background: #ffffff;
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  min-width: 200px;
+  z-index: 1002;
+  padding: 8px 0;
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.profileMenu.show {
+  display: block;
+}
+.profileMenuItem,
+.profileMenuItemLogout {
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  padding: 14px 20px;
+  font-size: 1rem;
+  color: #1a1a1a;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+}
+
+.profileMenuItem:hover {
+  background: linear-gradient(135deg, #f5f5dc 0%, #e6e6fa 100%);
+  color: #2f0c33;
+}
+
+.profileMenuItemLogout {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  margin-top: 4px;
+  color: #dc2626;
+  font-weight: 700;
+}
+
+.profileMenuItemLogout:hover {
+  background: #fee;
+  color: #b91c1c;
+}
+.authButtons {
+  display: flex;
+  gap: 8px;
+}
+.authButtonOutline {
+  background: none;
+  border: 1.5px solid #f5f5dc;
+  color: #f5f5dc;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+.authButtonOutline:hover {
+  background: #e6faf3;
+}
+.authButton {
+  background: linear-gradient(135deg, #f5f5dc, #e6e6fa);
+  color: #2f0c33;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.authButton:hover {
+  background: #24c98a;
+}
+@media (max-width: 1200px) {
+  .navbarCustom {
+    padding: 0 24px;
+  }
+
+  .dateTextCustom {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .navbarCustom {
+    padding: 0 20px;
+  }
+
+  .dateTextCustom {
+    display: none;
+  }
+
+  .profileName {
+    font-size: 0.95rem;
+  }
+
+  .rightSectionCustom {
+    gap: 14px;
+  }
+}
+
+@media (max-width: 850px) {
+  .profileName {
+    display: none;
+  }
+}
+@media (max-width: 768px) {
+  .navbarCustom {
+    height: 70px;
+    padding: 0 16px;
+    background: linear-gradient(135deg, #2f0c33 0%, #4a1a4f 100%);
+  }
+
+  .leftSection {
+    flex: 1;
+  }
+
+  .rightSectionCustom {
+    gap: 12px;
+  }
+
+  .logoText {
+    font-size: 1.3rem;
+  }
+
+  .authButton,
+  .authButtonOutline {
+    padding: 8px 14px;
+    font-size: 0.9rem;
+  }
+
+  .profileMenu {
+    right: 16px;
+    top: 70px;
+    min-width: 200px;
+    background: #ffffff;
+    box-shadow:
+      0 10px 30px rgba(0, 0, 0, 0.3),
+      0 0 0 1px rgba(0, 0, 0, 0.1);
+    z-index: 1002;
+  }
+
+  .profileDropdown {
+    padding: 6px 10px;
+  }
+}
+@media (max-width: 480px) {
+  .navbarCustom {
+    padding: 0 12px;
+    height: 65px;
+  }
+
+  .logoText {
+    font-size: 1.2rem;
+  }
+
+  .logoIcon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .rightSectionCustom {
+    gap: 8px;
+  }
+
+  .authButtons {
+    gap: 6px;
+  }
+
+  .authButton,
+  .authButtonOutline {
+    padding: 7px 12px;
+    font-size: 0.85rem;
+  }
+
+  .profileMenu {
+    right: 12px;
+    top: 65px;
+    min-width: 180px;
+    z-index: 1002;
+    background: #ffffff;
+    box-shadow:
+      0 10px 30px rgba(0, 0, 0, 0.3),
+      0 0 0 1px rgba(0, 0, 0, 0.1);
+  }
+
+  .profileMenuItem,
+  .profileMenuItemLogout {
+    padding: 12px 16px;
+    font-size: 0.95rem;
+  }
+
+  .profileDropdown {
+    padding: 4px 8px;
+  }
+
+  .profileIcon {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 360px) {
+  .navbarCustom {
+    padding: 0 8px;
+    height: 60px;
+  }
+
+  .logoText {
+    font-size: 1.1rem;
+  }
+
+  .logoIcon {
+    width: 26px;
+    height: 26px;
+  }
+
+  .rightSectionCustom {
+    gap: 6px;
+  }
+
+  .authButtons {
+    gap: 4px;
+  }
+
+  .authButton,
+  .authButtonOutline {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+
+  .profileMenu {
+    right: 8px;
+    top: 60px;
+    min-width: 170px;
+  }
+
+  .profileMenuItem,
+  .profileMenuItemLogout {
+    padding: 10px 14px;
+    font-size: 0.9rem;
+  }
+
+  .profileIcon {
+    font-size: 20px;
+  }
+}

@@ -1,0 +1,464 @@
+.aboutSection {
+  padding: 120px 0;
+  background: linear-gradient(180deg, 
+    rgba(46, 229, 157, 0.05) 0%, 
+    rgba(255, 255, 255, 0.02) 50%,
+    rgba(46, 229, 157, 0.05) 100%
+  );
+  position: relative;
+  overflow: hidden;
+}
+
+.aboutSection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 20%, rgba(46, 229, 157, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(46, 229, 157, 0.08) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.aboutHeader {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 80px auto;
+  position: relative;
+  z-index: 2;
+}
+
+.aboutTitle {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 900;
+  color: #1a1a1a;
+  margin-bottom: 2rem;
+  line-height: 1.2;
+  background: linear-gradient(135deg, #1a1a1a 0%, #F5F5DC 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.aboutDescription {
+  font-size: 1.2rem;
+  line-height: 1.7;
+  color: #4a5568;
+  margin: 0;
+  font-weight: 400;
+}
+
+.pillarsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.cometCardWrapper {
+  height: 100%;
+  min-height: 420px;
+  padding: 8px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cometCardWrapper:hover {
+  transform: translateY(-12px) scale(1.02);
+  filter: saturate(1.2) brightness(1.1);
+}
+
+.cardContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: transparent;
+}
+
+.cardImageSection {
+  position: relative;
+  aspect-ratio: 3/2;
+  margin: 8px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #F5F5DC, #E6E6FA);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: all 0.4s ease;
+}
+
+.cometCardWrapper:hover .cardImageSection {
+  background: linear-gradient(135deg, #F5F5DC, #E6E6FA, #DDA0DD);
+  box-shadow: 
+    0 20px 40px rgba(46, 229, 157, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.cardGradientOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.1) 0%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+  border-radius: 16px;
+  transition: all 0.4s ease;
+}
+
+.cometCardWrapper:hover .cardGradientOverlay {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.05) 0%,
+    rgba(0, 0, 0, 0.2) 100%
+  );
+}
+
+.cardContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+}
+
+.cardBody {
+  flex-grow: 1;
+  text-align: center;
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+
+.pillarIconContainer {
+  width: 64px;
+  height: 64px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.4s ease;
+  position: relative;
+  z-index: 2;
+}
+
+.cometCardWrapper:hover .pillarIconContainer {
+  transform: scale(1.1) rotate(5deg);
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.pillarIcon {
+  width: 32px;
+  height: 32px;
+  color: #F5F5DC;
+}
+
+.pillarTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #F5F5DC;
+  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.pillarSubtitle {
+  font-size: 1rem;
+  color: #F5F5DC;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+.pillarDescription {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  transition: all 0.3s ease;
+}
+
+.cometCardWrapper:hover .pillarTitle {
+  color: #F5F5DC;
+  text-shadow: 0 0 20px rgba(245, 245, 220, 0.5);
+}
+
+.cometCardWrapper:hover .pillarSubtitle {
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.cometCardWrapper:hover .pillarDescription {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.cardLabel {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.cardCode {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 1px;
+  font-weight: 400;
+  transition: all 0.3s ease;
+}
+
+.cometCardWrapper:hover .cardLabel {
+  color: #F5F5DC;
+  text-shadow: 0 0 10px rgba(245, 245, 220, 0.3);
+}
+
+.cometCardWrapper:hover .cardCode {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.aboutCta {
+  text-align: center;
+  margin-top: 80px;
+  position: relative;
+  z-index: 2;
+}
+
+.ctaText {
+  font-size: 1.3rem;
+  color: #2d3748;
+  margin-bottom: 2rem;
+  font-weight: 500;
+}
+
+.ctaButton {
+  background: linear-gradient(135deg, #2F0C33, #4A1A4F);
+  border: none;
+  color: #F5F5DC;
+  padding: 1rem 2.5rem;
+  border-radius: 0.75rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 32px rgba(47, 12, 51, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.ctaButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.ctaButton:hover::before {
+  left: 100%;
+}
+
+.ctaButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(46, 229, 157, 0.4);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .aboutSection {
+    padding: 80px 0;
+  }
+  
+  .aboutHeader {
+    margin-bottom: 60px;
+    padding: 0 1rem;
+  }
+  
+  .aboutTitle {
+    font-size: clamp(2rem, 6vw, 2.5rem);
+    margin-bottom: 1.5rem;
+  }
+  
+  .aboutDescription {
+    font-size: 1.1rem;
+  }
+  
+  .pillarsGrid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 0 1rem;
+  }
+  
+  .cometCardWrapper {
+    min-height: 380px;
+    padding: 6px;
+  }
+  
+  .cardContent {
+    padding: 12px;
+  }
+  
+  .aboutCta {
+    margin-top: 60px;
+    padding: 0 1rem;
+  }
+  
+  .ctaText {
+    font-size: 1.1rem;
+  }
+  
+  .ctaButton {
+    padding: 0.9rem 2rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .aboutSection {
+    padding: 60px 0;
+  }
+  
+  .pillarsGrid {
+    gap: 1.5rem;
+  }
+  
+  .cometCardWrapper {
+    min-height: 350px;
+    padding: 4px;
+  }
+  
+  .cardContent {
+    padding: 8px;
+  }
+  
+  .pillarIconContainer {
+    width: 48px;
+    height: 48px;
+  }
+  
+  /* Disable floating animation on mobile for performance */
+  .pillarsGrid > div .cometCardWrapper {
+    animation: none;
+  }
+  
+  .pillarIconContainer {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .pillarIcon {
+    width: 24px;
+    height: 24px;
+  }
+}/* Floating 
+Animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-10px) rotate(1deg);
+  }
+  66% {
+    transform: translateY(-5px) rotate(-1deg);
+  }
+}
+
+.pillarsGrid > div:nth-child(1) .cometCardWrapper {
+  animation: float 6s ease-in-out infinite;
+  animation-delay: 0s;
+}
+
+.pillarsGrid > div:nth-child(2) .cometCardWrapper {
+  animation: float 6s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+.pillarsGrid > div:nth-child(3) .cometCardWrapper {
+  animation: float 6s ease-in-out infinite;
+  animation-delay: 4s;
+}
+
+/* Enhanced 3D perspective */
+.pillarsGrid {
+  perspective: 1000px;
+  perspective-origin: center center;
+}
+
+.pillarsGrid > div {
+  transform-style: preserve-3d;
+}/* 
+Enhanced Glow Effects */
+.cometCardWrapper::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(45deg, #F5F5DC, #E6E6FA, #DDA0DD, #F5F5DC);
+  border-radius: 18px;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  background-size: 200% 200%;
+  animation: gradientShift 3s ease infinite;
+}
+
+.cometCardWrapper:hover::before {
+  opacity: 0.3;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Pulse effect for icons */
+@keyframes pulse {
+  0%, 100% { 
+    box-shadow: 0 0 0 0 rgba(46, 229, 157, 0.4);
+  }
+  50% { 
+    box-shadow: 0 0 0 20px rgba(46, 229, 157, 0);
+  }
+}
+
+.cometCardWrapper:hover .pillarIconContainer {
+  animation: pulse 2s infinite;
+}
+
+/* Shimmer effect */
+.cardImageSection::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.cometCardWrapper:hover .cardImageSection::after {
+  left: 100%;
+}

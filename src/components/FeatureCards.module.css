@@ -1,0 +1,290 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  perspective: 1000px;
+}
+
+.cardWrapper {
+  height: 100%;
+}
+
+.card {
+  position: relative;
+  background: linear-gradient(145deg, #1e293b, #0f172a);
+  border-radius: 24px;
+  padding: 0;
+  height: 100%;
+  min-height: 400px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    145deg,
+    rgba(46, 229, 157, 0.1) 0%,
+    rgba(14, 165, 233, 0.1) 50%,
+    rgba(168, 85, 247, 0.1) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  border-radius: 24px;
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card:hover {
+  transform: translateY(-8px) rotateX(5deg);
+  border-color: rgba(46, 229, 157, 0.3);
+  box-shadow:
+    0 25px 50px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(46, 229, 157, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.cardHeader {
+  position: relative;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.gradientBg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #f5f5dc 0%, #e6e6fa 50%, #dda0dd 100%);
+  opacity: 0.8;
+  transition: all 0.4s ease;
+}
+
+.card:hover .gradientBg {
+  opacity: 1;
+  background: linear-gradient(
+    135deg,
+    #f5f5dc 0%,
+    #e6e6fa 30%,
+    #dda0dd 60%,
+    #ba55d3 100%
+  );
+}
+
+.iconContainer {
+  position: relative;
+  z-index: 2;
+  width: 80px;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.4s ease;
+}
+
+.card:hover .iconContainer {
+  transform: scale(1.1) rotate(10deg);
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+}
+
+.icon {
+  font-size: 2rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.cardContent {
+  flex-grow: 1;
+  padding: 2rem;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.card:hover .title {
+  color: #f5f5dc;
+  text-shadow: 0 0 20px rgba(245, 245, 220, 0.5);
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  color: #f5f5dc;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.card:hover .subtitle {
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.description {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  transition: all 0.3s ease;
+}
+
+.card:hover .description {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  z-index: 2;
+}
+
+.badge {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+  padding: 0.25rem 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.card:hover .badge {
+  color: #f5f5dc;
+  background: rgba(245, 245, 220, 0.2);
+  box-shadow: 0 0 10px rgba(245, 245, 220, 0.3);
+}
+
+.number {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+  transition: all 0.3s ease;
+}
+
+.card:hover .number {
+  color: rgba(255, 255, 255, 0.8);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+/* Floating Animation */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-8px) rotate(1deg);
+  }
+  66% {
+    transform: translateY(-4px) rotate(-1deg);
+  }
+}
+
+.grid > div:nth-child(1) .card {
+  animation: float 8s ease-in-out infinite;
+  animation-delay: 0s;
+}
+
+.grid > div:nth-child(2) .card {
+  animation: float 8s ease-in-out infinite;
+  animation-delay: 2.5s;
+}
+
+.grid > div:nth-child(3) .card {
+  animation: float 8s ease-in-out infinite;
+  animation-delay: 5s;
+}
+
+/* Shimmer Effect */
+.cardHeader::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: left 0.6s ease;
+}
+
+.card:hover .cardHeader::after {
+  left: 100%;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .card {
+    min-height: 350px;
+  }
+
+  .cardContent {
+    padding: 1.5rem;
+  }
+
+  .cardFooter {
+    padding: 1rem 1.5rem;
+  }
+
+  .iconContainer {
+    width: 60px;
+    height: 60px;
+  }
+
+  .icon {
+    font-size: 1.5rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  /* Disable floating animation on mobile */
+  .grid > div .card {
+    animation: none;
+  }
+}
