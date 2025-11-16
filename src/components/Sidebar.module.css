@@ -5,7 +5,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  box-shadow: 2px 0 16px rgba(0,0,0,0.04);
+  box-shadow: 2px 0 16px rgba(0, 0, 0, 0.04);
   padding: 24px 0 16px 0;
   position: fixed;
   left: 0;
@@ -21,11 +21,10 @@
 }
 
 .logoIcon {
-  width: 32px;
-  height: 32px;
-  background: #4A1A4F;
-  border-radius: 8px;
+  width: 40px;
+  height: 40px;
   margin-right: 12px;
+  object-fit: contain;
 }
 
 .logoText {
@@ -54,13 +53,16 @@
   font-weight: 500;
   font-size: 1rem;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s;
   margin-bottom: 4px;
 }
 
-.menu li:hover, .menu .active {
+.menu li:hover,
+.menu .active {
   background: rgba(74, 26, 79, 0.1);
-  color: #4A1A4F;
+  color: #4a1a4f;
 }
 
 .icon {
@@ -125,7 +127,7 @@
   .sidebar {
     display: none;
   }
-  
+
   .mobileMenu {
     display: flex;
     position: fixed;
@@ -133,11 +135,11 @@
     left: 0;
     right: 0;
     background: #fff;
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
     padding: 8px 16px;
     z-index: 1000;
   }
-  
+
   .mobileMenuItem {
     flex: 1;
     display: flex;
@@ -149,11 +151,11 @@
     font-size: 0.75rem;
     transition: color 0.2s;
   }
-  
+
   .mobileMenuItem.active {
-    color: #4A1A4F;
+    color: #4a1a4f;
   }
-  
+
   .mobileMenuIcon {
     font-size: 1.5rem;
     margin-bottom: 4px;
@@ -164,14 +166,14 @@
   .mobileMenu {
     padding: 6px 12px;
   }
-  
+
   .mobileMenuItem {
     padding: 6px;
     font-size: 0.7rem;
   }
-  
+
   .mobileMenuIcon {
     font-size: 1.3rem;
     margin-bottom: 3px;
   }
-} 
+}

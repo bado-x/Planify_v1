@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Calendar as BigCalendar, dateFnsLocalizer } from 'react-big-calendar';
 import format from 'date-fns/format';
 import parse from 'date-fns/parse';
@@ -78,6 +79,7 @@ const CustomEventWrapper = ({ event, children }) => {
 };
 
 const CalendarPage = ({ tasks = [], user, onLogout, fetchTasks }) => {
+  const navigate = useNavigate();
   const [localTasks, setLocalTasks] = useState(tasks);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [view, setView] = useState('month');
@@ -162,7 +164,7 @@ const CalendarPage = ({ tasks = [], user, onLogout, fetchTasks }) => {
 
   const handleSelectEvent = (event) => {
     // Navigate to edit task or show details
-    window.location.href = `/edit-task/${event.id}`;
+    navigate(`/edit-task/${event.id}`);
   };
 
   const handleNavigate = (date) => {

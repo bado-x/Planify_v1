@@ -2,13 +2,14 @@ import React from 'react';
 import styles from './Sidebar.module.css';
 import { BiHomeAlt, BiFolder, BiTask, BiCalendar, BiMessageSquareDetail, BiCog, BiChat, BiBarChartAlt2, BiFolderOpen } from 'react-icons/bi';
 import { Link, useLocation } from 'react-router-dom';
+import Logo from '../assets/Logo.svg';
 
 const Sidebar = () => {
   const location = useLocation();
   return (
     <aside className={styles.sidebar}>
       <div className={styles.logoSection}>
-        <div className={styles.logoIcon}></div>
+        <img src={Logo} alt="Planify Logo" className={styles.logoIcon} />
         <span className={styles.logoText}>Planify</span>
       </div>
       <nav className={styles.menu}>
