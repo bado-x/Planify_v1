@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { BiChevronDown } from "react-icons/bi";
 import styles from "./navbar-menu.module.css";
 
 export const Menu = ({ setActive, children }) => {
@@ -22,7 +24,7 @@ export const Menu = ({ setActive, children }) => {
 
     document.addEventListener('click', handleClickOutside);
     document.addEventListener('keydown', handleEscapeKey);
-    
+
     return () => {
       document.removeEventListener('click', handleClickOutside);
       document.removeEventListener('keydown', handleEscapeKey);
@@ -33,7 +35,7 @@ export const Menu = ({ setActive, children }) => {
     // Add a small delay before closing to prevent flickering
     const timeout = setTimeout(() => {
       setActive(null);
-    }, 200);
+    }, 300);
     setHoverTimeout(timeout);
   };
 
@@ -46,7 +48,7 @@ export const Menu = ({ setActive, children }) => {
   };
 
   return (
-    <nav 
+    <nav
       className={styles.navbarMenuContainer}
       onMouseLeave={handleMouseLeave}
       onMouseEnter={handleMouseEnter}
@@ -56,47 +58,51 @@ export const Menu = ({ setActive, children }) => {
   );
 };
 
-export const MenuItem = ({ setActive, active, item, children }) => {
+export const MenuItem = ({ setActive, active, item, children, href }) => {
+  const navigate = useNavigate();
+  const isActive = active === item;
+
+  const handleClick = () => {
+    if (href) {
+      navigate(href);
+      setActive(null);
+    }
+  };
+
+  const handleMouseEnter = () => {
+    console.log('Mouse entered:', item);
+    setActive(item);
+  };
+
   return (
-    <div 
-      className={styles.navbarMenuItem} 
-      onMouseEnter={() => setActive(item)}
+    <div
+      className={styles.navbarMenuItem}
+      onMouseEnter={handleMouseEnter}
     >
-      <motion.p
+      <motion.div
         transition={{ duration: 0.3 }}
         className={styles.navbarMenuText}
+        onClick={handleClick}
+        style={{ cursor: href ? 'pointer' : 'default' }}
       >
-        {item}
-      </motion.p>
-      {active !== null && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.85, y: 10 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{
-            type: "spring",
-            mass: 0.5,
-            damping: 11.5,
-            stiffness: 100,
-            restDelta: 0.001,
-            restSpeed: 0.001,
-          }}
-        >
-          {active === item && (
-            <div 
-              className={styles.navbarDropdown}
-              onMouseLeave={() => setActive(null)}
-            >
-              <motion.div
-                transition={{ duration: 0.2 }}
-                layoutId="active"
-                className={styles.navbarDropdownBg}
-              />
-              <motion.div className={styles.navbarDropdownContent}>
-                {children}
-              </motion.div>
-            </div>
-          )}
-        </motion.div>
+        <span>{item}</span>
+        {children && (
+          <BiChevronDown
+            className={styles.chevronIcon}
+            style={{
+              transform: isActive ? 'rotate(180deg)' : 'rotate(0deg)',
+              transition: 'transform 0.3s ease'
+            }}
+          />
+        )}
+      </motion.div>
+      {isActive && children && (
+        <div className={styles.navbarDropdown}>
+          <div className={styles.navbarDropdownBg} />
+          <div className={styles.navbarDropdownContent}>
+            {children}
+          </div>
+        </div>
       )}
     </div>
   );
@@ -120,10 +126,21 @@ export const ProductItem = ({ title, description, href, src }) => {
   );
 };
 
-export const HoveredLink = ({ children, href, ...rest }) => {
+export const HoveredLink = ({ children, href, setActive, ...rest }) => {
+  const navigate = useNavigate();
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    if (setActive) {
+      setActive(null);
+    }
+    navigate(href);
+  };
+
   return (
     <a
       href={href}
+      onClick={handleClick}
       {...rest}
       className={styles.navbarHoveredLink}
     >

@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import Sidebar from "./components/Sidebar";
 import TaskTracking from "./pages/TaskTracking";
 import CalendarPage from "./pages/Calendar";
+import Analytics from "./pages/Analytics/Analytics";
 import About from "./pages/About/About";
 import Features from "./pages/Features/Features";
 import Contact from "./pages/Contact/Contact";
@@ -103,6 +104,7 @@ function App() {
           <Route path="/login" element={!user ? <Login onLogin={handleLogin} /> : <Navigate to="/dashboard" />} />
           <Route path="/register" element={!user ? <Register onRegister={handleLogin} /> : <Navigate to="/dashboard" />} />
           <Route path="/task-tracking" element={user ? <TaskTracking tasks={tasks} user={user} onLogout={handleLogout} fetchTasks={App.fetchTasks} /> : <Navigate to="/login" />} />
+          <Route path="/analytics" element={user ? <Analytics tasks={tasks} user={user} onLogout={handleLogout} /> : <Navigate to="/login" />} />
           <Route path="/calendar" element={user ? <CalendarPage tasks={tasks} user={user} onLogout={handleLogout} fetchTasks={App.fetchTasks} /> : <Navigate to="/login" />} />
           <Route path="/about" element={<About />} />
           <Route path="/old-about" element={<About />} />
@@ -134,6 +136,13 @@ function App() {
           >
             <span className="mobileMenuIcon">📋</span>
             <span>Tasks</span>
+          </button>
+          <button
+            onClick={() => navigate('/analytics')}
+            className={`mobileMenuItem ${location.pathname === '/analytics' ? 'active' : ''}`}
+          >
+            <span className="mobileMenuIcon">📊</span>
+            <span>Analytics</span>
           </button>
           <button
             onClick={() => navigate('/calendar')}

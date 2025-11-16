@@ -1,446 +1,456 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { taskApi } from '../../services/api';
+import React, { useState, useMemo } from 'react';
 import styles from './Analytics.module.css';
-import { 
-  BiBarChartAlt2, 
-  BiCheckCircle, 
-  BiTime, 
-  BiTrendingUp,
-  BiLineChart,
-  BiCalendar,
-  BiTargetLock
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    LineChart, Line, BarChart, Bar, AreaChart, Area, PieChart, Pie, Cell,
+    XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend
+} from 'recharts';
+import {
+    BiTrendingUp, BiTrendingDown, BiTask, BiCheckCircle,
+    BiTime, BiUser, BiCalendar, BiFilter
 } from 'react-icons/bi';
-import { 
-  format, 
-  startOfWeek, 
-  endOfWeek, 
-  startOfMonth, 
-  endOfMonth, 
-  subDays, 
-  subMonths,
-  isSameDay,
-  differenceInDays
-} from 'date-fns';
 
-const Analytics = ({ tasks = [], user, fetchTasks }) => {
-  const [timeRange, setTimeRange] = useState('month'); // week, month, year
-  const [localTasks, setLocalTasks] = useState(tasks);
+const Analytics = ({ tasks = [] }) => {
+    const [timeRange, setTimeRange] = useState('week');
 
-  useEffect(() => {
-    setLocalTasks(tasks);
-  }, [tasks]);
+    // Calculate analytics data from real tasks
+    const analyticsData = useMemo(() => {
+        const now = new Date();
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-  useEffect(() => {
-    if (user && user.id) {
-      const refreshTasks = async () => {
-        try {
-          const updatedTasks = await taskApi.fetchTasks(user.id);
-          setLocalTasks(updatedTasks);
-        } catch (error) {
-          console.error('Failed to refresh tasks:', error);
+        // Helper function to get date range
+        const getDateRange = (days) => {
+            const dates = [];
+            for (let i = days - 1; i >= 0; i--) {
+                const date = new Date(today);
+                date.setDate(date.getDate() - i);
+                dates.push(date);
+            }
+            return dates;
+        };
+
+        // Get tasks by status
+        const completedTasks = tasks.filter(t => t.status === 'done');
+        const inProgressTasks = tasks.filter(t => t.status === 'in-progress');
+        const pendingTasks = tasks.filter(t => t.status === 'pending');
+
+        // Calculate weekly performance
+        const weekDates = getDateRange(7);
+        const performanceData = weekDates.map((date) => {
+            const dayName = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][date.getDay()];
+            const dayTasks = tasks.filter(t => {
+                const taskDate = new Date(t.createdAt);
+                return taskDate.toDateString() === date.toDateString();
+            });
+
+            return {
+                date: dayName,
+                completed: dayTasks.filter(t => t.status === 'done').length,
+                pending: dayTasks.filter(t => t.status === 'pending').length,
+                overdue: dayTasks.filter(t => t.status === 'in-progress').length,
+            };
+        });
+
+        // Calculate monthly productivity (last 6 months)
+        const productivityData = [];
+        for (let i = 5; i >= 0; i--) {
+            const monthDate = new Date(now.getFullYear(), now.getMonth() - i, 1);
+            const monthName = monthDate.toLocaleString('en', { month: 'short' });
+
+            const monthTasks = tasks.filter(t => {
+                const taskDate = new Date(t.createdAt);
+                return taskDate.getMonth() === monthDate.getMonth() &&
+                    taskDate.getFullYear() === monthDate.getFullYear();
+            });
+
+            const completed = monthTasks.filter(t => t.status === 'done').length;
+            const total = monthTasks.length;
+            const productivity = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+            productivityData.push({
+                month: monthName,
+                productivity
+            });
         }
-      };
-      refreshTasks();
-    }
-  }, [user]);
 
-  // Calculate statistics
-  const stats = useMemo(() => {
-    const now = new Date();
-    let startDate, endDate;
+        // Calculate category distribution (based on task titles/keywords)
+        const categoryData = [
+            {
+                name: 'Development',
+                value: tasks.filter(t =>
+                    t.title.toLowerCase().includes('dev') ||
+                    t.title.toLowerCase().includes('code') ||
+                    t.title.toLowerCase().includes('bug') ||
+                    t.title.toLowerCase().includes('feature')
+                ).length,
+                color: '#8B5CF6'
+            },
+            {
+                name: 'Design',
+                value: tasks.filter(t =>
+                    t.title.toLowerCase().includes('design') ||
+                    t.title.toLowerCase().includes('ui') ||
+                    t.title.toLowerCase().includes('ux')
+                ).length,
+                color: '#D4A574'
+            },
+            {
+                name: 'Documentation',
+                value: tasks.filter(t =>
+                    t.title.toLowerCase().includes('doc') ||
+                    t.title.toLowerCase().includes('write') ||
+                    t.title.toLowerCase().includes('readme')
+                ).length,
+                color: '#A78BFA'
+            },
+            {
+                name: 'Meeting',
+                value: tasks.filter(t =>
+                    t.title.toLowerCase().includes('meet') ||
+                    t.title.toLowerCase().includes('call') ||
+                    t.title.toLowerCase().includes('discuss')
+                ).length,
+                color: '#E8D5C4'
+            },
+            {
+                name: 'Other',
+                value: tasks.filter(t => {
+                    const title = t.title.toLowerCase();
+                    return !title.includes('dev') && !title.includes('code') &&
+                        !title.includes('design') && !title.includes('ui') &&
+                        !title.includes('doc') && !title.includes('meet');
+                }).length,
+                color: '#C4B5FD'
+            },
+        ].filter(cat => cat.value > 0);
 
-    switch (timeRange) {
-      case 'week':
-        startDate = startOfWeek(now, { weekStartsOn: 1 });
-        endDate = endOfWeek(now, { weekStartsOn: 1 });
-        break;
-      case 'month':
-        startDate = startOfMonth(now);
-        endDate = endOfMonth(now);
-        break;
-      case 'year':
-        startDate = new Date(now.getFullYear(), 0, 1);
-        endDate = new Date(now.getFullYear(), 11, 31);
-        break;
-      default:
-        startDate = startOfMonth(now);
-        endDate = endOfMonth(now);
-    }
+        // Priority distribution (based on status)
+        const priorityData = [
+            { name: 'In Progress', value: inProgressTasks.length, color: '#DC2626' },
+            { name: 'Pending', value: pendingTasks.length, color: '#F59E0B' },
+            { name: 'Completed', value: completedTasks.length, color: '#10B981' },
+        ].filter(p => p.value > 0);
 
-    const filteredTasks = localTasks.filter(task => {
-      if (!task.createdAt) return false;
-      const taskDate = new Date(task.createdAt);
-      return taskDate >= startDate && taskDate <= endDate;
-    });
+        // Calculate previous period stats for comparison
+        const lastWeekStart = new Date(today);
+        lastWeekStart.setDate(lastWeekStart.getDate() - 14);
+        const lastWeekEnd = new Date(today);
+        lastWeekEnd.setDate(lastWeekEnd.getDate() - 7);
 
-    const total = filteredTasks.length;
-    const pending = filteredTasks.filter(t => t.status === 'pending').length;
-    const inProgress = filteredTasks.filter(t => t.status === 'in-progress').length;
-    const done = filteredTasks.filter(t => t.status === 'done').length;
-    const completionRate = total > 0 ? ((done / total) * 100).toFixed(1) : 0;
+        const lastWeekTasks = tasks.filter(t => {
+            const taskDate = new Date(t.createdAt);
+            return taskDate >= lastWeekStart && taskDate < lastWeekEnd;
+        });
 
-    // Calculate average completion time (for done tasks)
-    const doneTasks = filteredTasks.filter(t => t.status === 'done' && t.createdAt);
-    let avgCompletionDays = 0;
-    if (doneTasks.length > 0) {
-      const totalDays = doneTasks.reduce((sum, task) => {
-        const created = new Date(task.createdAt);
-        const completed = task.updatedAt ? new Date(task.updatedAt) : new Date();
-        return sum + differenceInDays(completed, created);
-      }, 0);
-      avgCompletionDays = Math.round(totalDays / doneTasks.length);
-    }
+        const thisWeekTasks = tasks.filter(t => {
+            const taskDate = new Date(t.createdAt);
+            const weekAgo = new Date(today);
+            weekAgo.setDate(weekAgo.getDate() - 7);
+            return taskDate >= weekAgo;
+        });
 
-    // Most productive day
-    const dayCounts = {};
-    filteredTasks.forEach(task => {
-      if (task.createdAt) {
-        const day = format(new Date(task.createdAt), 'EEEE');
-        dayCounts[day] = (dayCounts[day] || 0) + 1;
-      }
-    });
-    const mostProductiveDay = Object.keys(dayCounts).reduce((a, b) => 
-      dayCounts[a] > dayCounts[b] ? a : b, 'Monday'
-    ) || 'N/A';
+        const calculateChange = (current, previous) => {
+            if (previous === 0) return current > 0 ? 100 : 0;
+            return Math.round(((current - previous) / previous) * 100);
+        };
 
-    // Task distribution
-    const distribution = {
-      pending: ((pending / total) * 100).toFixed(1) || 0,
-      inProgress: ((inProgress / total) * 100).toFixed(1) || 0,
-      done: ((done / total) * 100).toFixed(1) || 0,
-    };
+        const completionRate = tasks.length > 0
+            ? Math.round((completedTasks.length / tasks.length) * 100)
+            : 0;
 
-    return {
-      total,
-      pending,
-      inProgress,
-      done,
-      completionRate,
-      avgCompletionDays,
-      mostProductiveDay,
-      distribution,
-      filteredTasks
-    };
-  }, [localTasks, timeRange]);
+        const lastWeekCompletionRate = lastWeekTasks.length > 0
+            ? Math.round((lastWeekTasks.filter(t => t.status === 'done').length / lastWeekTasks.length) * 100)
+            : 0;
 
-  // Calculate trend data
-  const trendData = useMemo(() => {
-    const weeks = [];
-    const now = new Date();
-    
-    for (let i = 3; i >= 0; i--) {
-      const weekStart = startOfWeek(subDays(now, i * 7), { weekStartsOn: 1 });
-      const weekEnd = endOfWeek(weekStart, { weekStartsOn: 1 });
-      
-      const weekTasks = localTasks.filter(task => {
-        if (!task.createdAt) return false;
-        const taskDate = new Date(task.createdAt);
-        return taskDate >= weekStart && taskDate <= weekEnd;
-      });
+        return {
+            performanceData,
+            productivityData,
+            categoryData,
+            priorityData,
+            stats: {
+                totalTasks: tasks.length,
+                totalTasksChange: calculateChange(thisWeekTasks.length, lastWeekTasks.length),
+                completedTasks: completedTasks.length,
+                completedTasksChange: calculateChange(
+                    thisWeekTasks.filter(t => t.status === 'done').length,
+                    lastWeekTasks.filter(t => t.status === 'done').length
+                ),
+                inProgressTasks: inProgressTasks.length,
+                inProgressTasksChange: calculateChange(
+                    thisWeekTasks.filter(t => t.status === 'in-progress').length,
+                    lastWeekTasks.filter(t => t.status === 'in-progress').length
+                ),
+                completionRate,
+                completionRateChange: completionRate - lastWeekCompletionRate,
+            }
+        };
+    }, [tasks, timeRange]);
 
-      weeks.push({
-        week: format(weekStart, 'MMM dd'),
-        total: weekTasks.length,
-        completed: weekTasks.filter(t => t.status === 'done').length,
-      });
-    }
-    
-    return weeks;
-  }, [localTasks]);
+    const { performanceData, productivityData, categoryData, priorityData, stats } = analyticsData;
 
-  // Get chart data for visualization
-  const getChartData = () => {
-    return [
-      { name: 'Pending', value: stats.pending, color: '#FFA500' },
-      { name: 'In Progress', value: stats.inProgress, color: '#4A90E2' },
-      { name: 'Done', value: stats.done, color: '#50C878' },
+    // Stats cards data
+    const statsCards = [
+        {
+            title: 'Total Tasks',
+            value: stats.totalTasks.toString(),
+            change: `${stats.totalTasksChange >= 0 ? '+' : ''}${stats.totalTasksChange}%`,
+            trend: stats.totalTasksChange >= 0 ? 'up' : 'down',
+            icon: BiTask,
+            color: '#8B5CF6'
+        },
+        {
+            title: 'Completed',
+            value: stats.completedTasks.toString(),
+            change: `${stats.completedTasksChange >= 0 ? '+' : ''}${stats.completedTasksChange}%`,
+            trend: stats.completedTasksChange >= 0 ? 'up' : 'down',
+            icon: BiCheckCircle,
+            color: '#10B981'
+        },
+        {
+            title: 'In Progress',
+            value: stats.inProgressTasks.toString(),
+            change: `${stats.inProgressTasksChange >= 0 ? '+' : ''}${stats.inProgressTasksChange}%`,
+            trend: stats.inProgressTasksChange >= 0 ? 'up' : 'down',
+            icon: BiTime,
+            color: '#F59E0B'
+        },
+        {
+            title: 'Completion Rate',
+            value: `${stats.completionRate}%`,
+            change: `${stats.completionRateChange >= 0 ? '+' : ''}${stats.completionRateChange}%`,
+            trend: stats.completionRateChange >= 0 ? 'up' : 'down',
+            icon: BiTrendingUp,
+            color: '#D4A574'
+        },
     ];
-  };
 
-  const chartData = getChartData();
+    return (
+        <div className={styles.analyticsContainer}>
+            {/* Header */}
+            <div className={styles.header}>
+                <div>
+                    <h1 className={styles.title}>Analytics Dashboard</h1>
+                    <p className={styles.subtitle}>Track your productivity and performance metrics</p>
+                </div>
+                <div className={styles.filters}>
+                    <button
+                        className={`${styles.filterBtn} ${timeRange === 'week' ? styles.active : ''}`}
+                        onClick={() => setTimeRange('week')}
+                    >
+                        Week
+                    </button>
+                    <button
+                        className={`${styles.filterBtn} ${timeRange === 'month' ? styles.active : ''}`}
+                        onClick={() => setTimeRange('month')}
+                    >
+                        Month
+                    </button>
+                    <button
+                        className={`${styles.filterBtn} ${timeRange === 'year' ? styles.active : ''}`}
+                        onClick={() => setTimeRange('year')}
+                    >
+                        Year
+                    </button>
+                </div>
+            </div>
 
-  return (
-    <div className={styles.pageContainer}>
-      <div className={styles.backgroundPattern}></div>
-      
-      <div className={styles.contentWrapper}>
-        {/* Header */}
-        <div className={styles.header}>
-          <div className={styles.headerContent}>
-            <h1 className={styles.title}>Analytics & Insights</h1>
-            <p className={styles.subtitle}>Track your productivity and performance metrics</p>
-          </div>
-          <div className={styles.timeRangeSelector}>
-            <button
-              className={`${styles.rangeButton} ${timeRange === 'week' ? styles.active : ''}`}
-              onClick={() => setTimeRange('week')}
-            >
-              Week
-            </button>
-            <button
-              className={`${styles.rangeButton} ${timeRange === 'month' ? styles.active : ''}`}
-              onClick={() => setTimeRange('month')}
-            >
-              Month
-            </button>
-            <button
-              className={`${styles.rangeButton} ${timeRange === 'year' ? styles.active : ''}`}
-              onClick={() => setTimeRange('year')}
-            >
-              Year
-            </button>
-          </div>
-        </div>
-
-        {/* Key Metrics Cards */}
-        <div className={styles.metricsGrid}>
-          <div className={styles.metricCard}>
-            <div className={styles.metricIcon}>
-              <BiBarChartAlt2 />
-            </div>
-            <div className={styles.metricContent}>
-              <div className={styles.metricValue}>{stats.total}</div>
-              <div className={styles.metricLabel}>Total Tasks</div>
-              <div className={styles.metricChange}>This {timeRange}</div>
-            </div>
-          </div>
-
-          <div className={styles.metricCard}>
-            <div className={styles.metricIcon}>
-              <BiCheckCircle />
-            </div>
-            <div className={styles.metricContent}>
-              <div className={styles.metricValue}>{stats.completionRate}%</div>
-              <div className={styles.metricLabel}>Completion Rate</div>
-              <div className={styles.metricChange}>{stats.done} completed</div>
-            </div>
-          </div>
-
-          <div className={styles.metricCard}>
-            <div className={styles.metricIcon}>
-              <BiTime />
-            </div>
-            <div className={styles.metricContent}>
-              <div className={styles.metricValue}>{stats.avgCompletionDays}</div>
-              <div className={styles.metricLabel}>Avg. Days to Complete</div>
-              <div className={styles.metricChange}>Based on done tasks</div>
-            </div>
-          </div>
-
-          <div className={styles.metricCard}>
-            <div className={styles.metricIcon}>
-              <BiTrendingUp />
-            </div>
-            <div className={styles.metricContent}>
-              <div className={styles.metricValue}>{stats.mostProductiveDay}</div>
-              <div className={styles.metricLabel}>Most Productive Day</div>
-              <div className={styles.metricChange}>Peak activity</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Charts Section */}
-        <div className={styles.chartsGrid}>
-          {/* Status Distribution Chart */}
-          <div className={styles.chartCard}>
-            <div className={styles.chartHeader}>
-              <h3 className={styles.chartTitle}>Status Distribution</h3>
-              <p className={styles.chartSubtitle}>Tasks by status</p>
-            </div>
-            <div className={styles.chartBody}>
-              <div className={styles.pieChart}>
-                {chartData.map((item, index) => {
-                  const percentage = stats.total > 0 ? (item.value / stats.total) * 100 : 0;
-                  const circumference = 2 * Math.PI * 45;
-                  const offset = circumference - (percentage / 100) * circumference;
-                  
-                  return (
-                    <div key={index} className={styles.pieSegment}>
-                      <svg width="120" height="120" className={styles.pieSvg}>
-                        <circle
-                          cx="60"
-                          cy="60"
-                          r="45"
-                          fill="none"
-                          stroke="#e1e8ed"
-                          strokeWidth="20"
-                        />
-                        <circle
-                          cx="60"
-                          cy="60"
-                          r="45"
-                          fill="none"
-                          stroke={item.color}
-                          strokeWidth="20"
-                          strokeDasharray={circumference}
-                          strokeDashoffset={offset}
-                          transform="rotate(-90 60 60)"
-                          className={styles.pieSlice}
-                        />
-                      </svg>
-                      <div className={styles.pieLabel}>
-                        <div className={styles.pieValue}>{item.value}</div>
-                        <div className={styles.pieName}>{item.name}</div>
-                        <div className={styles.piePercentage}>{percentage.toFixed(1)}%</div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-              <div className={styles.legend}>
-                {chartData.map((item, index) => (
-                  <div key={index} className={styles.legendItem}>
-                    <div className={styles.legendColor} style={{ backgroundColor: item.color }}></div>
-                    <span>{item.name}: {item.value}</span>
-                  </div>
+            {/* Stats Cards */}
+            <div className={styles.statsGrid}>
+                {statsCards.map((stat, index) => (
+                    <Card key={index} className={styles.statCard}>
+                        <CardContent className={styles.statContent}>
+                            <div className={styles.statIcon} style={{ backgroundColor: `${stat.color}15` }}>
+                                <stat.icon style={{ color: stat.color }} size={24} />
+                            </div>
+                            <div className={styles.statInfo}>
+                                <p className={styles.statLabel}>{stat.title}</p>
+                                <div className={styles.statValueRow}>
+                                    <h3 className={styles.statValue}>{stat.value}</h3>
+                                    <span className={`${styles.statChange} ${stat.trend === 'up' ? styles.positive : styles.negative}`}>
+                                        {stat.trend === 'up' ? <BiTrendingUp /> : <BiTrendingDown />}
+                                        {stat.change}
+                                    </span>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
                 ))}
-              </div>
             </div>
-          </div>
 
-          {/* Productivity Trend */}
-          <div className={styles.chartCard}>
-            <div className={styles.chartHeader}>
-              <h3 className={styles.chartTitle}>Productivity Trend</h3>
-              <p className={styles.chartSubtitle}>Last 4 weeks</p>
-            </div>
-            <div className={styles.chartBody}>
-              <div className={styles.barChart}>
-                {trendData.map((week, index) => {
-                  const maxValue = Math.max(...trendData.map(w => w.total), 1);
-                  const height = (week.total / maxValue) * 100;
-                  const completedHeight = week.total > 0 ? (week.completed / week.total) * 100 : 0;
-                  
-                  return (
-                    <div key={index} className={styles.barGroup}>
-                      <div className={styles.barContainer}>
-                        <div 
-                          className={styles.barBackground}
-                          style={{ height: '100%' }}
-                        >
-                          <div 
-                            className={styles.barCompleted}
-                            style={{ 
-                              height: `${completedHeight}%`,
-                              backgroundColor: '#50C878'
-                            }}
-                          ></div>
-                          <div 
-                            className={styles.barRemaining}
-                            style={{ 
-                              height: `${100 - completedHeight}%`,
-                              backgroundColor: '#FFA500'
-                            }}
-                          ></div>
-                        </div>
-                      </div>
-                      <div className={styles.barLabel}>{week.week}</div>
-                      <div className={styles.barValue}>{week.total}</div>
+            {tasks.length === 0 ? (
+                <Card className={styles.emptyState}>
+                    <CardContent style={{ padding: '3rem', textAlign: 'center' }}>
+                        <BiTask size={64} style={{ color: '#D4A574', marginBottom: '1rem' }} />
+                        <h3 style={{ color: '#8B5CF6', marginBottom: '0.5rem' }}>No Tasks Yet</h3>
+                        <p style={{ color: '#6B7280' }}>Start adding tasks to see your analytics and insights</p>
+                    </CardContent>
+                </Card>
+            ) : (
+                <>
+                    {/* Charts Row 1 */}
+                    <div className={styles.chartsRow}>
+                        {/* Performance Over Time */}
+                        <Card className={styles.chartCard}>
+                            <CardHeader>
+                                <CardTitle style={{ fontSize: '1.25rem', fontWeight: 700, color: '#2f0c33' }}>Task Performance</CardTitle>
+                                <p className={styles.chartSubtitle}>Weekly task completion trends</p>
+                            </CardHeader>
+                            <CardContent>
+                                <ResponsiveContainer width="100%" height={300}>
+                                    <AreaChart data={performanceData}>
+                                        <defs>
+                                            <linearGradient id="completedGradient" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.3} />
+                                                <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0} />
+                                            </linearGradient>
+                                            <linearGradient id="pendingGradient" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="5%" stopColor="#D4A574" stopOpacity={0.3} />
+                                                <stop offset="95%" stopColor="#D4A574" stopOpacity={0} />
+                                            </linearGradient>
+                                        </defs>
+                                        <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                                        <XAxis dataKey="date" stroke="#6B7280" />
+                                        <YAxis stroke="#6B7280" />
+                                        <Tooltip
+                                            contentStyle={{
+                                                backgroundColor: '#fff',
+                                                border: '1px solid #E5E7EB',
+                                                borderRadius: '8px',
+                                                boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
+                                            }}
+                                        />
+                                        <Legend />
+                                        <Area
+                                            type="monotone"
+                                            dataKey="completed"
+                                            stroke="#8B5CF6"
+                                            fill="url(#completedGradient)"
+                                            strokeWidth={2}
+                                        />
+                                        <Area
+                                            type="monotone"
+                                            dataKey="pending"
+                                            stroke="#D4A574"
+                                            fill="url(#pendingGradient)"
+                                            strokeWidth={2}
+                                        />
+                                        <Area
+                                            type="monotone"
+                                            dataKey="overdue"
+                                            stroke="#DC2626"
+                                            fill="none"
+                                            strokeWidth={2}
+                                        />
+                                    </AreaChart>
+                                </ResponsiveContainer>
+                            </CardContent>
+                        </Card>
+
+                        {/* Productivity Trend */}
+                        <Card className={styles.chartCard}>
+                            <CardHeader>
+                                <CardTitle style={{ fontSize: '1.25rem', fontWeight: 700, color: '#2f0c33' }}>Productivity Trend</CardTitle>
+                                <p className={styles.chartSubtitle}>Monthly productivity percentage</p>
+                            </CardHeader>
+                            <CardContent>
+                                <ResponsiveContainer width="100%" height={300}>
+                                    <LineChart data={productivityData}>
+                                        <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                                        <XAxis dataKey="month" stroke="#6B7280" />
+                                        <YAxis stroke="#6B7280" />
+                                        <Tooltip
+                                            contentStyle={{
+                                                backgroundColor: '#fff',
+                                                border: '1px solid #E5E7EB',
+                                                borderRadius: '8px',
+                                                boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
+                                            }}
+                                        />
+                                        <Line
+                                            type="monotone"
+                                            dataKey="productivity"
+                                            stroke="#8B5CF6"
+                                            strokeWidth={3}
+                                            dot={{ fill: '#8B5CF6', r: 6 }}
+                                            activeDot={{ r: 8 }}
+                                        />
+                                    </LineChart>
+                                </ResponsiveContainer>
+                            </CardContent>
+                        </Card>
                     </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </div>
 
-        {/* Detailed Statistics */}
-        <div className={styles.statsGrid}>
-          <div className={styles.statCard}>
-            <div className={styles.statHeader}>
-              <h3>Task Status Breakdown</h3>
-            </div>
-            <div className={styles.statContent}>
-              <div className={styles.statRow}>
-                <span className={styles.statLabel}>Pending</span>
-                <span className={styles.statNumber}>{stats.pending}</span>
-                <div className={styles.statBar}>
-                  <div 
-                    className={styles.statBarFill}
-                    style={{ 
-                      width: `${stats.distribution.pending}%`,
-                      backgroundColor: '#FFA500'
-                    }}
-                  ></div>
-                </div>
-                <span className={styles.statPercent}>{stats.distribution.pending}%</span>
-              </div>
-              <div className={styles.statRow}>
-                <span className={styles.statLabel}>In Progress</span>
-                <span className={styles.statNumber}>{stats.inProgress}</span>
-                <div className={styles.statBar}>
-                  <div 
-                    className={styles.statBarFill}
-                    style={{ 
-                      width: `${stats.distribution.inProgress}%`,
-                      backgroundColor: '#4A90E2'
-                    }}
-                  ></div>
-                </div>
-                <span className={styles.statPercent}>{stats.distribution.inProgress}%</span>
-              </div>
-              <div className={styles.statRow}>
-                <span className={styles.statLabel}>Done</span>
-                <span className={styles.statNumber}>{stats.done}</span>
-                <div className={styles.statBar}>
-                  <div 
-                    className={styles.statBarFill}
-                    style={{ 
-                      width: `${stats.distribution.done}%`,
-                      backgroundColor: '#50C878'
-                    }}
-                  ></div>
-                </div>
-                <span className={styles.statPercent}>{stats.distribution.done}%</span>
-              </div>
-            </div>
-          </div>
+                    {/* Charts Row 2 */}
+                    {(categoryData.length > 0 || priorityData.length > 0) && (
+                        <div className={styles.chartsRow}>
+                            {/* Category Distribution */}
+                            {categoryData.length > 0 && (
+                                <Card className={styles.chartCard}>
+                                    <CardHeader>
+                                        <CardTitle style={{ fontSize: '1.25rem', fontWeight: 700, color: '#2f0c33' }}>Tasks by Category</CardTitle>
+                                        <p className={styles.chartSubtitle}>Distribution across different categories</p>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <ResponsiveContainer width="100%" height={300}>
+                                            <PieChart>
+                                                <Pie
+                                                    data={categoryData}
+                                                    cx="50%"
+                                                    cy="50%"
+                                                    labelLine={false}
+                                                    label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                                                    outerRadius={100}
+                                                    fill="#8884d8"
+                                                    dataKey="value"
+                                                >
+                                                    {categoryData.map((entry, index) => (
+                                                        <Cell key={`cell-${index}`} fill={entry.color} />
+                                                    ))}
+                                                </Pie>
+                                                <Tooltip />
+                                            </PieChart>
+                                        </ResponsiveContainer>
+                                    </CardContent>
+                                </Card>
+                            )}
 
-          <div className={styles.statCard}>
-            <div className={styles.statHeader}>
-              <h3>Performance Insights</h3>
-            </div>
-            <div className={styles.statContent}>
-              <div className={styles.insightItem}>
-                <div className={styles.insightIcon}>
-                  <BiLineChart />
-                </div>
-                <div className={styles.insightText}>
-                  <strong>Completion Rate:</strong> {stats.completionRate}%
-                  {stats.completionRate >= 70 ? ' Excellent!' : stats.completionRate >= 50 ? ' Good!' : ' Keep going!'}
-                </div>
-              </div>
-              <div className={styles.insightItem}>
-                <div className={styles.insightIcon}>
-                  <BiTime />
-                </div>
-                <div className={styles.insightText}>
-                  <strong>Average Time:</strong> {stats.avgCompletionDays} days per task
-                </div>
-              </div>
-              <div className={styles.insightItem}>
-                <div className={styles.insightIcon}>
-                  <BiCalendar />
-                </div>
-                <div className={styles.insightText}>
-                  <strong>Peak Day:</strong> {stats.mostProductiveDay}
-                </div>
-              </div>
-              <div className={styles.insightItem}>
-                <div className={styles.insightIcon}>
-                  <BiTargetLock />
-                </div>
-                <div className={styles.insightText}>
-                  <strong>Active Tasks:</strong> {stats.inProgress} in progress
-                </div>
-              </div>
-            </div>
-          </div>
+                            {/* Priority Distribution */}
+                            {priorityData.length > 0 && (
+                                <Card className={styles.chartCard}>
+                                    <CardHeader>
+                                        <CardTitle style={{ fontSize: '1.25rem', fontWeight: 700, color: '#2f0c33' }}>Status Distribution</CardTitle>
+                                        <p className={styles.chartSubtitle}>Tasks breakdown by status</p>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <ResponsiveContainer width="100%" height={300}>
+                                            <PieChart>
+                                                <Pie
+                                                    data={priorityData}
+                                                    cx="50%"
+                                                    cy="50%"
+                                                    innerRadius={60}
+                                                    outerRadius={100}
+                                                    fill="#8884d8"
+                                                    paddingAngle={5}
+                                                    dataKey="value"
+                                                >
+                                                    {priorityData.map((entry, index) => (
+                                                        <Cell key={`cell-${index}`} fill={entry.color} />
+                                                    ))}
+                                                </Pie>
+                                                <Tooltip />
+                                                <Legend />
+                                            </PieChart>
+                                        </ResponsiveContainer>
+                                    </CardContent>
+                                </Card>
+                            )}
+                        </div>
+                    )}
+                </>
+            )}
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default Analytics;
-

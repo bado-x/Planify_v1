@@ -21,8 +21,9 @@
   top: 2rem;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 1001;
+  z-index: 10000;
   transition: all 0.3s ease-in-out;
+  overflow: visible !important;
 }
 
 .scrollingNavbar.visible {
@@ -31,9 +32,8 @@
 }
 
 .scrollingNavbar.hidden {
-  opacity: 0;
-  transform: translateX(-50%) translateY(-100%);
-  pointer-events: none;
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
 
 .logo {
@@ -59,22 +59,26 @@
 }
 
 .logoText {
-  color: #F5F5DC;
+  color: #f5f5dc;
   font-weight: 700;
   letter-spacing: -0.5px;
 }
 
 .ctaButton {
   position: relative;
-  background: linear-gradient(135deg, rgba(47, 12, 51, 0.9), rgba(74, 26, 79, 0.7)) !important;
+  background: linear-gradient(
+    135deg,
+    rgba(47, 12, 51, 0.9),
+    rgba(74, 26, 79, 0.7)
+  ) !important;
   border: none !important;
   border-radius: 1rem !important;
   backdrop-filter: blur(16px);
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(47, 12, 51, 0.3),
     inset 0 1px 0 rgba(245, 245, 220, 0.1) !important;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  color: #F5F5DC !important;
+  color: #f5f5dc !important;
   font-size: 0.9rem;
   font-weight: 600;
   padding: 0.8rem 1.5rem;
@@ -88,13 +92,18 @@
 }
 
 .ctaButton::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
   transition: left 0.5s ease;
 }
 
@@ -103,21 +112,29 @@
 }
 
 .ctaButton:hover {
-  background: linear-gradient(135deg, rgba(47, 12, 51, 1), rgba(74, 26, 79, 0.8)) !important;
-  box-shadow: 
+  background: linear-gradient(
+    135deg,
+    rgba(47, 12, 51, 1),
+    rgba(74, 26, 79, 0.8)
+  ) !important;
+  box-shadow:
     0 12px 48px rgba(47, 12, 51, 0.4),
     inset 0 1px 0 rgba(245, 245, 220, 0.2) !important;
   transform: translateY(-2px);
-  color: #F5F5DC !important;
+  color: #f5f5dc !important;
 }
 
 .ctaButton:focus {
-  background: linear-gradient(135deg, rgba(47, 12, 51, 1), rgba(74, 26, 79, 0.8)) !important;
-  box-shadow: 
+  background: linear-gradient(
+    135deg,
+    rgba(47, 12, 51, 1),
+    rgba(74, 26, 79, 0.8)
+  ) !important;
+  box-shadow:
     0 0 0 0.15rem rgba(245, 245, 220, 0.2),
     0 8px 32px rgba(47, 12, 51, 0.3),
     inset 0 1px 0 rgba(245, 245, 220, 0.1) !important;
-  color: #F5F5DC !important;
+  color: #f5f5dc !important;
 }
 
 .ctaButton:active {
@@ -156,47 +173,162 @@
     left: 1rem;
     right: 1rem;
   }
-  
+
   .navbarProductsGrid {
     min-width: 400px;
   }
 }
 
+/* Mobile Header */
+.mobileHeader {
+  display: none;
+}
+
+.mobileSidebar {
+  display: none;
+}
+
+.overlay {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .fixedHeader {
-    position: relative;
+    display: none;
+  }
+
+  .scrollingNavbar {
+    display: none !important;
+  }
+
+  .mobileHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    background: linear-gradient(135deg, #2f0c33 0%, #4a1a4f 100%);
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    padding: 1rem;
-    background: rgba(47, 12, 51, 0.9);
-    backdrop-filter: blur(16px);
-    border-radius: 0;
+    z-index: 10000;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   }
-  
-  .scrollingNavbar {
-    display: none;
+
+  .hamburger {
+    background: none;
+    border: none;
+    color: #f5f5dc;
+    cursor: pointer;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
   }
-  
-  .scrollingNavbar.visible,
-  .scrollingNavbar.hidden {
-    display: none;
+
+  .hamburger:hover {
+    transform: scale(1.1);
   }
-  
-  .logo {
-    font-size: 1.3rem;
+
+  .mobileLogo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
   }
-  
-  .logoIcon {
+
+  .mobileLogo .logoIcon {
     width: 28px;
     height: 28px;
   }
-  
-  .ctaButton {
+
+  .mobileLogo .logoText {
+    font-size: 1.3rem;
+  }
+
+  .mobileLoginBtn {
+    background: linear-gradient(135deg, #f5f5dc, #e6e6fa) !important;
+    border: none !important;
+    color: #2f0c33 !important;
+    font-weight: 700;
     padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
     font-size: 0.85rem;
-    min-width: 80px;
-    height: 36px;
+  }
+
+  .mobileSidebar {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: -300px;
+    width: 280px;
+    height: 100vh;
+    background: linear-gradient(135deg, #2f0c33 0%, #4a1a4f 100%);
+    z-index: 10001;
+    transition: left 0.3s ease;
+    overflow-y: auto;
+    padding-top: 70px;
+  }
+
+  .mobileSidebar.open {
+    left: 0;
+  }
+
+  .sidebarContent {
+    padding: 1rem;
+  }
+
+  .sidebarSection {
+    margin-bottom: 1.5rem;
+  }
+
+  .sidebarTitle {
+    color: #f5f5dc;
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 0.75rem;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    transition: background 0.3s ease;
+  }
+
+  .sidebarTitle:hover {
+    background: rgba(245, 245, 220, 0.1);
+  }
+
+  .sidebarSubItems {
+    padding-left: 1rem;
+  }
+
+  .sidebarSubItem {
+    color: rgba(245, 245, 220, 0.8);
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 0.6rem 0.75rem;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+  }
+
+  .sidebarSubItem:hover {
+    background: rgba(245, 245, 220, 0.15);
+    color: #f5f5dc;
+    transform: translateX(4px);
+  }
+
+  .overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 10000;
   }
 }
 
@@ -204,11 +336,11 @@
   .fixedHeader {
     padding: 0.8rem 1rem;
   }
-  
+
   .logo {
     font-size: 1.2rem;
   }
-  
+
   .logoIcon {
     width: 24px;
     height: 24px;

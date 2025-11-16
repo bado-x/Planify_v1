@@ -1,0 +1,163 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10000;
+  background: linear-gradient(135deg, #2f0c33 0%, #4a1a4f 100%);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  padding: 0;
+}
+
+.navbarContainer {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.05);
+}
+
+.logoIcon {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+
+.logoText {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #f5f5dc;
+  letter-spacing: -0.5px;
+}
+
+.menuItems {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  justify-content: center;
+}
+
+.menuItem {
+  position: relative;
+}
+
+.menuTitle {
+  display: block;
+  padding: 0.75rem 1.25rem;
+  color: #f5f5dc;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.menuTitle:hover {
+  background: rgba(245, 245, 220, 0.15);
+  color: #fff;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 0.5rem;
+  background: #ffffff;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+  min-width: 200px;
+  padding: 0.5rem;
+  z-index: 10001;
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdownItem {
+  padding: 0.75rem 1rem;
+  color: #2a2a2a;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.dropdownItem:hover {
+  background: linear-gradient(135deg, #f5f5dc 0%, #e6e6fa 100%);
+  color: #2f0c33;
+  transform: translateX(4px);
+}
+
+.loginButton {
+  background: linear-gradient(135deg, #f5f5dc, #e6e6fa) !important;
+  border: none !important;
+  color: #2f0c33 !important;
+  font-weight: 700;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(245, 245, 220, 0.2);
+}
+
+.loginButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(245, 245, 220, 0.3);
+  background: linear-gradient(135deg, #e6e6fa, #f5f5dc) !important;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .menuItems {
+    display: none;
+  }
+
+  .navbarContainer {
+    padding: 1rem 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbarContainer {
+    padding: 0.75rem 1rem;
+  }
+
+  .logoIcon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .logoText {
+    font-size: 1.3rem;
+  }
+
+  .loginButton {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+}

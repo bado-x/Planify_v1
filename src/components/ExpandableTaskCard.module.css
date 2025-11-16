@@ -137,6 +137,8 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  overflow: hidden;
+  position: relative;
 }
 
 .actionButton:hover {
@@ -146,6 +148,8 @@
 
 .buttonText {
   display: inline;
+  white-space: nowrap;
+  transition: all 0.3s ease;
 }
 
 /* Card List */
@@ -298,18 +302,35 @@
     font-size: 0.85rem;
   }
 
-  .buttonText {
-    display: none;
+  .actionButton {
+    min-width: 48px;
+    width: 48px;
+    padding: 0.75rem;
+    height: 48px;
+    transition: all 0.3s ease;
   }
 
-  .actionButton {
-    min-width: auto;
-    padding: 0.75rem;
-    width: 48px;
-    height: 48px;
+  .actionButton:hover {
+    width: auto;
+    min-width: 150px;
+    padding: 0.75rem 1.5rem;
+  }
+
+  .buttonText {
+    max-width: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .actionButton:hover .buttonText {
+    max-width: 200px;
+    opacity: 1;
+    margin-left: 0.5rem;
   }
 
   .actionButton i {
     font-size: 1.2rem;
+    transition: all 0.3s ease;
   }
 }

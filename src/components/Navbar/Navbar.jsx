@@ -4,7 +4,7 @@ import styles from './Navbar.module.css';
 import { BiUserCircle, BiPlusCircle, BiLogOut } from 'react-icons/bi';
 import { format } from 'date-fns';
 
-const CustomNavbar = ({ user }) => {
+const CustomNavbar = ({ user, onLogout }) => {
   const navigate = useNavigate();
   const [profileOpen, setProfileOpen] = useState(false);
   const profileRef = useRef(null);
@@ -27,8 +27,12 @@ const CustomNavbar = ({ user }) => {
   }, [profileOpen]);
 
   const handleLogout = () => {
-    localStorage.removeItem('user');
-    window.location.href = '/login';
+    if (onLogout) {
+      onLogout();
+    } else {
+      localStorage.removeItem('user');
+      window.location.href = '/login';
+    }
   };
 
   return (
